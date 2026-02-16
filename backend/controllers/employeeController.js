@@ -4,8 +4,14 @@ import Designation from '../models/Designation.js';
 // Create a new employee
 export const createEmployee = async (req, res) => {
     try {
-        const { designation } = req.body;
-
+        const { designation, fullName, ...otherBody } = req.body;
+        let firstName, lastName;
+        if (fullName) {
+            const nameParts = fullName.split(' ');
+            firstName = nameParts[0];
+            lastName = nameParts.slice(1).join(' ');
+        }
+        
         if (designation) {
             const foundDesignation = await Designation.findById(designation);
             if (!foundDesignation) {
@@ -13,7 +19,7 @@ export const createEmployee = async (req, res) => {
             }
         }
         
-        const newEmployee = new Employee(req.body);
+        const newEmployee = new Employee({ ...otherBody, firstName, lastName, designation });
         const savedEmployee = await newEmployee.save();
         res.status(201).json(savedEmployee);
     } catch (error) {
@@ -47,9 +53,18 @@ export const getEmployeeById = async (req, res) => {
 // Update an employee by ID
 export const updateEmployee = async (req, res) => {
     try {
+        const { fullName, ...otherBody } = req.body;
+        const updateData = { ...otherBody };
+
+        if (fullName) {
+            const nameParts = fullName.split(' ');
+            updateData.firstName = nameParts[0];
+            updateData.lastName = nameParts.slice(1).join(' ');
+        }
+
         const updatedEmployee = await Employee.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            updateData,
             { new: true, runValidators: true }
         ).populate('designation');
         if (!updatedEmployee) {
