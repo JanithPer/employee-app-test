@@ -32,9 +32,30 @@ const EmployeeTable = () => {
         setIsEditModalOpen(true);
     };
 
+    const handleDeleteClick = (employee) => {
+        setSelectedEmployee(employee);
+        setIsDeleteModalOpen(true);
+    };
+
     const handleSave = () => {
         setIsEditModalOpen(false);
         window.location.reload();
+    };
+
+    const handleDeleteConfirm = async () => {
+        if (!selectedEmployee) return;
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/employees/${selectedEmployee._id}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete employee');
+            }
+            setIsDeleteModalOpen(false);
+            window.location.reload();
+        } catch (error) {
+            console.error('Delete error:', error);
+        }
     };
 
     return (
@@ -71,7 +92,7 @@ const EmployeeTable = () => {
                                 {/* Delete Button */}
                                 <button
                                     className="btn btn-ghost btn-sm btn-square tooltip"
-                                    onClick={() => setIsDeleteModalOpen(true)}
+                                    onClick={() => handleDeleteClick(emp)}
                                     data-tip="Delete Employee"
                                 >
                                     <Trash2 size={18} className="text-error" />
@@ -93,6 +114,8 @@ const EmployeeTable = () => {
             <ConfirmDeleteModal
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={handleDeleteConfirm}
+                employeeName={selectedEmployee ? `${selectedEmployee.firstName} ${selectedEmployee.lastName}` : ''}
             />
         </div>
     );
