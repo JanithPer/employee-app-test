@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import EmployeeTable from './components/EmployeeTable'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -16,6 +17,7 @@ function App() {
       <button className="btn">Medium</button>
       <button className="btn btn-lg">Large</button>
       <button className="btn btn-xl">Xlarge</button>
+      <EmployeeTable />
 
     </>
   )
