@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-// Load environment variables
 dotenv.config();
 
 // Import Routes
@@ -13,8 +12,8 @@ import designationRoutes from './routes/designationRoutes.js';
 const app = express();
 
 // Middleware
-app.use(cors()); // Allows your React frontend to communicate with this server
-app.use(express.json()); // Essential for parsing the "fullName" and other JSON data
+app.use(cors()); 
+app.use(express.json()); 
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
