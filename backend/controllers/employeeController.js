@@ -18,8 +18,18 @@ export const createEmployee = async (req, res) => {
                 return res.status(400).json({ message: 'Designation not found' });
             }
         }
+
+        const lastEmployee = await Employee.findOne().sort({ employeeId: -1 });
+        let newEmployeeId;
+        if (lastEmployee) {
+            const lastIdNumber = parseInt(lastEmployee.employeeId.replace('EMP', ''), 10);
+            const newIdNumber = lastIdNumber + 1;
+            newEmployeeId = 'EMP' + String(newIdNumber).padStart(3, '0');
+        } else {
+            newEmployeeId = 'EMP001';
+        }
         
-        const newEmployee = new Employee({ ...otherBody, firstName, lastName, designation });
+        const newEmployee = new Employee({ ...otherBody, firstName, lastName, designation, employeeId: newEmployeeId });
         const savedEmployee = await newEmployee.save();
         res.status(201).json(savedEmployee);
     } catch (error) {
