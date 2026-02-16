@@ -20,14 +20,15 @@ const saveEmployee = async (req, res) => {
         });
 
         await newEmployee.save();
-        res.status(201).json({ message: "Employee saved successfully!", data: newEmployee });
+        const populatedEmployee = await Employee.findById(newEmployee._id).populate('designation');
+        res.status(201).json({ message: "Employee saved successfully!", data: populatedEmployee });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
 
 const getAllEmployees = async (req, res) => {
-    const employees = await Employee.find();
+    const employees = await Employee.find().populate('designation');
     res.json(employees);
 };
 
@@ -48,7 +49,7 @@ const updateEmployee = async (req, res) => {
             designation,
             dateOfJoin,
             isManager
-        }, { new: true });
+        }, { new: true }).populate('designation');
 
         res.json(updated);
     } catch (error) {
