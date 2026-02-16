@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import EmployeeTable from './components/EmployeeTable'
+import AddEmployeeModal from './components/AddEmployeeModal';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   return (
     <div className='m-4'>
@@ -17,12 +18,22 @@ function App() {
         <button className="btn">Add Designation</button>
         <div>
           <button className="btn">Refresh</button>
-          <button className="btn">Add New</button>
+          <button 
+          className="btn"
+          onClick={() => {setIsAddModalOpen(true)}}
+          >
+            Add New
+          </button>
         </div>
       </div>
       
       <EmployeeTable />
 
+      {/* Modals */}
+          <AddEmployeeModal 
+            isOpen={isAddModalOpen} 
+            onClose={() => setIsAddModalOpen(false)} 
+          />
     </div>
   )
 }

@@ -1,7 +1,11 @@
-import React from 'react';
+import { useState } from 'react';
 import { Pencil, Trash2 } from 'lucide-react'; // Standard modern icons
+import EditEmployeeModal from './EditEmoloyeeModal';
 
 const EmployeeTable = () => {
+
+   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const employees = [
     { id: "101", designation: "Software Engineer", firstName: "Alice", lastName: "Johnson", dateOfJoin: "2023-01-15" },
     { id: "102", designation: "Product Manager", firstName: "Bob", lastName: "Smith", dateOfJoin: "2022-11-03" },
@@ -35,7 +39,7 @@ const EmployeeTable = () => {
                 {/* Edit Button */}
                 <button 
                   className="btn btn-ghost btn-sm btn-square tooltip" 
-                  onClick={() => console.log('Edit', emp.id)}
+                  onClick={() => setIsEditModalOpen(true)}
                   data-tip="Edit Employee"
                 >
                   <Pencil size={18} className="text-info" />
@@ -54,6 +58,13 @@ const EmployeeTable = () => {
           ))}
         </tbody>
       </table>
+
+
+      {/* Modals */}
+        <EditEmployeeModal 
+          isOpen={isEditModalOpen} 
+          onClose={() => setIsEditModalOpen(false)} 
+        />
     </div>
   );
 };
