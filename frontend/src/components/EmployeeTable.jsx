@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Pencil, Trash2 } from 'lucide-react'; // Standard modern icons
-import EditEmployeeModal from './EditEmoloyeeModal';
+import EditEmployeeModal from './EditEmployeeModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 
 const EmployeeTable = () => {
 
     const [employees, setEmployees] = useState([]);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -25,6 +26,16 @@ const EmployeeTable = () => {
 
         fetchEmployees();
     }, []);
+
+    const handleEditClick = (employee) => {
+        setSelectedEmployee(employee);
+        setIsEditModalOpen(true);
+    };
+
+    const handleSave = () => {
+        setIsEditModalOpen(false);
+        window.location.reload();
+    };
 
     return (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
@@ -51,7 +62,7 @@ const EmployeeTable = () => {
                                 {/* Edit Button */}
                                 <button
                                     className="btn btn-ghost btn-sm btn-square tooltip"
-                                    onClick={() => setIsEditModalOpen(true)}
+                                    onClick={() => handleEditClick(emp)}
                                     data-tip="Edit Employee"
                                 >
                                     <Pencil size={18} className="text-info" />
@@ -76,6 +87,8 @@ const EmployeeTable = () => {
             <EditEmployeeModal
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
+                onSave={handleSave}
+                employee={selectedEmployee}
             />
             <ConfirmDeleteModal
                 isOpen={isDeleteModalOpen}
