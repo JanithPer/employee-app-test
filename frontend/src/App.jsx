@@ -1,25 +1,29 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import EmployeeTable from './components/EmployeeTable'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <h1 class="text-3xl font-bold underline">
-      Hello world!
-      </h1>
-
-      <button className="btn btn-xs">Xsmall</button>
-      <button className="btn btn-sm">Small</button>
-      <button className="btn">Medium</button>
-      <button className="btn btn-lg">Large</button>
-      <button className="btn btn-xl">Xlarge</button>
+    <div className='m-4'>
+      <div className='flex justify-center'>
+        <div>
+          <div className="badge badge-xl">Employee Tracker</div>
+          <div className="badge badge-soft badge-primary">By Janith Perera</div>
+        </div>
+      </div>
+      
+      <div className='flex justify-between'>
+        <button className="btn">Add Designation</button>
+        <div>
+          <button className="btn">Refresh</button>
+          <button className="btn">Add New</button>
+        </div>
+      </div>
+      
       <EmployeeTable />
 
-    </>
+    </div>
   )
 }
 
